@@ -10,8 +10,14 @@
     dependencies {
         testCompile 'junit:junit:4.8.2'
         testCompile 'org.mockito:mockito-all:1.8.4'
+        compile 'org.springframework:spring-web:3.2.2.RELEASE'
        	compile 'org.springframework:spring-webmvc:3.2.2.RELEASE'
    		compile 'org.springframework.data:spring-data-mongodb:1.2.0.RELEASE'
+   		compile 'org.springframework:spring-context-support:3.2.2.RELEASE'
+   		compile 'jfree:jfreechart:1.0.12'
+   		compile 'javax.servlet:servlet-api:2.5'
+   		compile 'org.apache.velocity:velocity:1.7'
+   		compile 'org.apache.velocity:velocity-tools:2.0'
    		runtime 'javax.servlet:jstl:1.1.2'
     }
     
