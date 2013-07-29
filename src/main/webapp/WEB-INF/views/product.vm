@@ -1,0 +1,21 @@
+		#define($content)
+            <div class="span4">
+               <div class="well">
+                  <h4> Order Type: $orderStats.getProduct() </h4>
+                  <h5> Total Number of Orders : $orderStats.getTotalOrderCount() </h5>    
+                   
+                  <label style="font-weight: bold;padding-left: 20px"> Orders Accepted : $orderStats.getCustomCounts().get("OrdersAccepted")</label>
+                  
+                  <label style="font-weight: bold;padding-left: 20px"> Orders Rejected : $orderStats.getCustomCounts().get("OrdersRejected")</label>
+                  
+                  <label style="font-weight: bold;padding-left: 20px"> Submission Failed :$orderStats.getCustomCounts().get("OrdersSubmissionFailed")</label>             	                        
+                  
+               </div>
+            </div>   
+            <div class="span4">
+               <div class="well"><img src="$orderStats.getPieChartUrl()"></div>
+            </div>
+            <div class="span4 ">
+               <div class="well "><img src="$orderStats.getXyChartUrl()"></div>
+            </div>         
+         #end 

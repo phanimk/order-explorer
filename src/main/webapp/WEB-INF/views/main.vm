@@ -1,0 +1,27 @@
+		#define($content)
+			<div class="span4">
+               <div class="well">               	 
+                  	<h4> Total Number of Orders: $orderStats.getTotalOrderCount() </h4>  
+                  	
+                  	<label style="font-weight: bold;padding-left: 20px"> Orders Accepted : $orderStats.getTotalSuccessCount()</label>
+                  
+                  	<label style="font-weight: bold;padding-left: 20px"> Orders Rejected : $orderStats.getTotalRejectedCount()</label>
+                  
+                  	<label style="font-weight: bold;padding-left: 20px"> Submission Failed :$orderStats.getTotalFailureCount()</label>             	           
+                 
+                  	<h4>CFU :  $orderStats.getCfuCount() </h4>
+                 
+                  	<h4>AFU :  $orderStats.getAfuCount() </h4>
+                 
+                 	<h4>CFA :  $orderStats.getCfaCount() </h4>
+                
+                  	<h4>AFA :  $orderStats.getAfaCount() </h4>    
+               </div>
+            </div>
+            <div class="span4">
+               <div class="well"><img  src="$orderStats.getPieChartUrl()"></div>
+            </div>
+            <div class="span4 ">
+               <div class="well "><img src="$orderStats.getXyChartUrl()"></div>
+            </div>
+        #end

@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+   <head>
+      <title>Test.html</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+      <link rel="stylesheet" href="/resources/css/bootstrap.css">
+      <link rel="stylesheet" href="/resources/css/bootstrap-responsive.css">
+      <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+      <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+      <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+   </head>
+   <body>
+   <style>
+   .fieldset {
+    font-size: 1em;
+    padding: 0.5em;
+    border-radius: 1em;
+    font-family: sans-serif;
+}</style>
+      <script>
+         $(function() {
+               $( "#fromDate" ).datepicker();    
+               $( "#toDate" ).datepicker();  
+               $("#date").change( function(){
+             		console.log("showDates");
+         	 		if (this.value == "CUSTOM"){
+         	    		console.log("enterd");		
+         				$('#custom').show();		
+             		}else{
+             		$('#custom').hide();
+             		}	
+               });
+               
+               
+                $("#make").change( function(){
+             		console.log("showModels");
+             		var val = this.value;
+         	 		if (val != "ALL"){
+         	 			console.log(val);         	 			
+         				$('#modelDiv').show();		
+             		}else{
+             			$('#modelDiv').hide();
+             		}	
+               });
+               
+         });        
+          
+      </script>     
+      <form action="/order-explorer/product" method="get" name="oeOptions" modelAttribute="oeOptions">
+      <div class="navbar navbar-fixed-top">
+         <div class="navbar-inner">
+            <div class="container"></div>
+         </div>
+      </div>
+      <div class="container">
+         <div class="hero-unit hidden-phone">
+            <div width="10%">
+               Product :
+               <select class="input span1" name="product" id="product" style="margin-right: 30px;">
+                  <option value="ALL">ALL</option>
+                  <option value="CFU">CFU</option>
+                  <option value="AFU">AFU</option>
+                  <option value="CFA">CFA</option>
+                  <option value="AFA">AFA</option>
+               </select>               
+               Make:
+               <select class="input span2" name="make" id="make" style="margin-right: 30px;">
+               	<option value="ALL">ALL</option>
+               	#foreach( $brand in $orderStats.getAllBrands() )
+    				<option value="$brand">$brand</option>
+  				#end                  
+               </select>               
+               Date: 
+               <select class="input span2" name="date" id="date" style="margin-right: 30px;margin-bottom:5px;" >
+                  <option value="TODAY">TODAY</option>
+                  <option value="1 WEEK">1 WEEK</option>
+                  <option value="1 MONTH">1 MONTH</option>
+                  <option value="3 MONTHS">3 MONTHS</option>
+                  <option value="CUSTOM">CUSTOM</option>
+               </select>
+               <input type="submit"  value ="Explore"  id="button" align="right" style="margin-right: 30px;"/>                   
+            </div> 
+            <div width="10%">
+            	<div width="10%" id="modelDiv" style="display: none;padding-left:181px;float:left">
+               		Model: 
+               		<select class="input span2" name="model" id="modelSelect">   
+               			<option value="ALL">ALL</option>               		
+                  		#foreach( $brand in $orderStats.getAllBrands() )
+                  			#foreach( $model in $orderStats.getAllModelsForBrand($brand) )
+    							<option value="$model" id="$brand" >$model</option>
+    						#end
+  						#end
+               		</select>
+               		
+               	
+               </div>
+               	<div id="custom" style="display: none;float:left;padding-left: 31px">
+                  From <input class="input span1" name="fromDate" id="fromDate"  /> 
+                  To <input class="input span1" name="toDate" id="toDate"   />
+               </div> 
+            	                
+            </div>           
+         </div>
+         <div class="row main-features">
+            $!content
+         </div>
+      </div>
+      <div class="navbar navbar-fixed-bottom">
+         <div class="navbar-inner">
+            <div class="container"></div>
+         </div>
+      </div>
+      </form>
+   </body>
+</html>
