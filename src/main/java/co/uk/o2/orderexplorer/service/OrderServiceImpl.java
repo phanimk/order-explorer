@@ -351,4 +351,25 @@ public class OrderServiceImpl implements OrderService {
 				"OrderRejected");
 	}
 
+	@Override
+	public Map<String, String> getDailyData(String type, String brand,
+			String model, Date fromDate, Date toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> getWeeklyData(String type, String brand,
+			String model, Date fromDate, Date toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<String, String> getMonthlyData(String type, String brand,
+			String model, Date fromDate, Date toDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

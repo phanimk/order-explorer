@@ -44,6 +44,10 @@ public class OrderStatistics {
 
 	private String xyChartUrl;
 
+	public Map<String, List<String>> getAllBrandsMap() {
+		return allBrands;
+	}
+
 	public Set<String> getAllBrands() {
 		return allBrands.keySet();
 	}

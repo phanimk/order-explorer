@@ -59,4 +59,13 @@ public interface OrderService {
 
 	List<String> getAllModelsForBrand(String brand);
 
+	Map<String, String> getDailyData(String type, String brand, String model,
+			Date fromDate, Date toDate);
+
+	Map<String, String> getWeeklyData(String type, String brand, String model,
+			Date fromDate, Date toDate);
+
+	Map<String, String> getMonthlyData(String type, String brand, String model,
+			Date fromDate, Date toDate);
+
 }

@@ -20,8 +20,8 @@
 }</style>
       <script>
          $(function() {
-               $( "#fromDate" ).datepicker();    
-               $( "#toDate" ).datepicker();  
+               $( "#fromDate" ).datepicker({ minDate: '-3m' , maxDate: '0' });    
+               $( "#toDate" ).datepicker({ minDate: '-3m' , maxDate: '0' });  
                $("#date").change( function(){
              		console.log("showDates");
          	 		if (this.value == "CUSTOM"){
@@ -32,15 +32,34 @@
              		}	
                });
                
+              
                
                 $("#make").change( function(){
              		console.log("showModels");
+             		$("#make").show();
+             		
+             		
              		var val = this.value;
          	 		if (val != "ALL"){
-         	 			console.log(val);         	 			
+         	 			//console.log(val); 
+         	 			
+         	 			var newBrandMap = { 
+							#foreach ( $mapEntry in ${orderStats.getAllBrandsMap().entrySet()} )
+								'$mapEntry.key' : [ #foreach ( $brand in $mapEntry.value ) #if($foreach.index > 0) , #end '$brand' #end ] ,
+							#end							
+						}; 
+         	 			 
+         	 			$('#modelSelect').empty();
+         	 			$('#modelSelect').append('<option value="ALL">ALL</option>');
+         	 			$.each( newBrandMap , function( key, value ) {
+         	 				if(key == val){
+         	 					$.each(value, function( intIndex, objValue ) {
+    								$('#modelSelect').append("<option >" + objValue + "</option>");
+								});
+         	 				}         	 				
+						});
+         	 			
          				$('#modelDiv').show();		
-             		}else{
-             			$('#modelDiv').hide();
              		}	
                });
                
@@ -84,16 +103,10 @@
             <div width="10%">
             	<div width="10%" id="modelDiv" style="display: none;padding-left:181px;float:left">
                		Model: 
-               		<select class="input span2" name="model" id="modelSelect">   
-               			<option value="ALL">ALL</option>               		
-                  		#foreach( $brand in $orderStats.getAllBrands() )
-                  			#foreach( $model in $orderStats.getAllModelsForBrand($brand) )
-    							<option value="$model" id="$brand" >$model</option>
-    						#end
-  						#end
+               		<select class="input span2" name="model" id="modelSelect">        			              		
+                  		
                		</select>
-               		
-               	
+               		              	
                </div>
                	<div id="custom" style="display: none;float:left;padding-left: 31px">
                   From <input class="input span1" name="fromDate" id="fromDate"  /> 
