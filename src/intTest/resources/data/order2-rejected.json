@@ -1,0 +1,106 @@
+{
+	"basketInfo" : {
+		"basketId" : {"$oid": "51cdb56ae29c74b29d17f710"},
+		"lastModifiedAgent" : "tonicorcoran",
+		"lastModifiedTime" : "2013-06-28T16:10:29.076Z"
+	},
+	"touchPoint" : "agent",
+	"channel" : "VoiceUpgrade",
+	"msisdn" : "447743192869",
+	"identityId" : null,
+	"agentId" : "tonicorcoran",
+	"optimisticLockingVersion" : {"$oid": "51cdb59c265af0b7804fd8d0"},
+	"createdTime" : "2013-06-28T16:11:05.303Z",
+	"expiryTime" : "2013-06-28T17:11:05.303Z",
+	"submittedTime" : "2013-06-28T16:11:07.588Z",
+	"earlyUpgradeFee" : 16500,
+	"earlyUpgradeReference" : 505627608,
+	"submissionState" : "OrderRejected",
+	"stockMessage" : null,
+	"stockExtendedMessage" : null,
+	"lineItems" : [
+		{
+			"description" : "12 months, 600 minutes, Unlimited texts",
+			"price" : {
+				"monthlyPence" : 1600
+			},
+			"cataloguePrice" : {
+				"monthlyPence" : 1600
+			},
+			"type" : "plan",
+			"categories" : [
+				"postpay",
+				"simplicity",
+				"voice"
+			],
+			"fulfillmentData" : {
+				"productType" : "POT",
+				"productName" : "O2 600 12M 500MB SIMO",
+				"productId" : "AppleMobile1"
+			},
+			"hideInBasket" : false,
+			"addedByPromotion" : false,
+			"stock" : null,
+			"stockMessage" : null,
+			"extraInformation" : "500 O2 to O2 minutes",
+			"skuOrPid" : "T:CR5450:600Mins:12M:SIMO:500MB:500OnNet",
+			"rrp" : null,
+			"commitmentLength" : "P12M"
+		},
+		{
+			"description" : "500MB",
+			"price" : {
+				"monthlyPence" : 0
+			},
+			"cataloguePrice" : {
+				"monthlyPence" : 0
+			},
+			"type" : "dataallowance",
+			"categories" : [
+				"smartphone",
+				"standard"
+			],
+			"fulfillmentData" : {
+				"productType" : "TAM",
+				"productName" : "500MB",
+				"productId" : "B:CR5450:500MB:DataWiFi:Smartphone:FOC:bolton"
+			},
+			"hideInBasket" : false,
+			"addedByPromotion" : false,
+			"stock" : null,
+			"stockMessage" : null,
+			"extraInformation" : null,
+			"skuOrPid" : "B:CR5450:500MB:DataWiFi:Smartphone:FOC:bolton",
+			"rrp" : null,
+			"commitmentLength" : null
+		}
+	],
+	"deliveryOption" : {
+		
+	},
+	"partner" : "upgrade_csa",
+	"partnerId" : "o2",
+	"clickAndCollectSupported" : false,
+	"orderNumber" : "ms-4001615615",
+	"customerName" : "Angela Smith",
+	"orangeCustomerNumber" : "********",
+	"deliveryAddress" : {
+		"organisationName" : null,
+		"departmentName" : null,
+		"subBuildingName" : null,
+		"buildingNumber" : "110",
+		"buildingName" : null,
+		"dependentThoroughfareNameAndDescriptor" : null,
+		"thoroughfareNameAndDescriptor" : "ORTON RD",
+		"doubleDependentLocality" : null,
+		"dependentLocality" : null,
+		"postTown" : "CARLISLE",
+		"county" : "CUMBRIA",
+		"postCode" : "CA27HD",
+		"countryCode" : "GB"
+	},
+	"submittedOrderXml" : "<?xml version=\"1.0\" ?><submitUpgradeOrder_1 xmlns:ns3=\"http://soa.o2.co.uk/coredata_1\" xmlns:ns2=\"http://soa.o2.co.uk/pscommonpostpaydata_2\" xmlns=\"http://soa.o2.co.uk/manageorderdata_2\"><orderNumber>ms-201615615</orderNumber><upgradeMsisdn>07743192869</upgradeMsisdn><customerNumber>38395862</customerNumber><orderTimeStamp>2013-06-28T17:11:07.000+01:00</orderTimeStamp><sourceDetails><orderMethod>OL</orderMethod><partner>upgrade_csa</partner><owningBusinessDivision>O2ONLINE</owningBusinessDivision><sourceOfSale>online</sourceOfSale><salesPerson>tonicorcoran</salesPerson></sourceDetails><orderTotalDetails><vatTotal>0</vatTotal><vatCodeDescription>STANDARD RATE</vatCodeDescription><vatReceiptRequired>N</vatReceiptRequired><vatExclusiveTotalPrice>0</vatExclusiveTotalPrice><total>0</total></orderTotalDetails><upgradeDiscounts><upgradeDiscountApplicable>0</upgradeDiscountApplicable><upgradeDiscountActual>0</upgradeDiscountActual></upgradeDiscounts><saleableProducts><saleableProductId>1</saleableProductId><saleableProductName>O2 600 12M 500MB SIMO</saleableProductName><saleableProductPrice>0</saleableProductPrice><saleableProductOriginalPrice>0</saleableProductOriginalPrice><systemSuggestedDiscountPrice>0</systemSuggestedDiscountPrice><vatRate>20.0</vatRate><vatAmount>0</vatAmount><vatExclusivePrice>0</vatExclusivePrice><assignedProducts><postpayTariff><productId>T:CR5450:600Mins:12M:SIMO:500MB:500OnNet</productId><productName>O2 600 12M 500MB SIMO</productName><tariffModifier><productId>B:CR5450:500MB:DataWiFi:Smartphone:FOC:bolton</productId><productName>500MB</productName></tariffModifier></postpayTariff></assignedProducts></saleableProducts></submitUpgradeOrder_1>",
+	"soaErrorMessage" : "manageorder-36600-3106-E:::EarlyUpgrade fee missing in input, although earlyUpgrade is being taken.",
+	"submissionRequestId" : "51cdb59b265af0b7804fd8bf:agent:VoiceUpgrade:WebSealAccessManagerUserId=tonicorcoran",
+	"uniqueActiveOrder" : "u:447743192869"
+}

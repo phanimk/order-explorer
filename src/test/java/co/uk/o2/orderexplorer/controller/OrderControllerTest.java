@@ -3,8 +3,7 @@
  */
 package co.uk.o2.orderexplorer.controller;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,6 +29,7 @@ import org.springframework.web.context.WebApplicationContext;
 import co.uk.o2.orderexplorer.model.OrderExplorerForm;
 import co.uk.o2.orderexplorer.model.OrderStatistics;
 import co.uk.o2.orderexplorer.service.OrderService;
+import co.uk.o2.orderexplorer.utils.OrderType;
 
 /**
  * @author Phani Maddali
@@ -93,12 +93,18 @@ public class OrderControllerTest {
 		expectedOrderStatistics.setPieChartUrl(PIE_CHART_URL);
 		expectedOrderStatistics.setXyChartUrl(XY_CHART_URL);
 		
-		when(mockOrderService.getTotalOrderCount()).thenReturn(TOTAL_ORDER_COUNT);
-		when(mockOrderService.getSuccessfullyCompletedOrderCount()).thenReturn(TOTAL_SUCCESS_COUNT);
-		when(mockOrderService.getRejectedOrderCount()).thenReturn(TOTAL_REJECTED_COUNT);
-		when(mockOrderService.getSuccessfullyRequestedOrderCount()).thenReturn(TOTAL_FAILURE_COUNT);
-		when(mockOrderService.getTotalOrderCountByType(anyString(),any(Date.class),any(Date.class)))
+		when(mockOrderService.getTotalOrderCount(null, null, null, null, null)).thenReturn(TOTAL_ORDER_COUNT);
+		when(mockOrderService.getSuccessfullyCompletedOrderCount(null, null, null, null, null)).thenReturn(TOTAL_SUCCESS_COUNT);
+		when(mockOrderService.getRejectedOrderCount(null, null, null, null, null)).thenReturn(TOTAL_REJECTED_COUNT);
+		when(mockOrderService.getSuccessfullyRequestedOrderCount(null, null, null, null, null)).thenReturn(TOTAL_FAILURE_COUNT);
+		when(mockOrderService.getTotalOrderCount(eq(OrderType.CFA.getName()), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
 			.thenReturn(TOTAL_ANYORDERTYPE_COUNT);
+		when(mockOrderService.getTotalOrderCount(eq(OrderType.CFU.getName()), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
+		.thenReturn(TOTAL_ANYORDERTYPE_COUNT);
+		when(mockOrderService.getTotalOrderCount(eq(OrderType.AFA.getName()), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
+		.thenReturn(TOTAL_ANYORDERTYPE_COUNT);
+		when(mockOrderService.getTotalOrderCount(eq(OrderType.AFU.getName()), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
+		.thenReturn(TOTAL_ANYORDERTYPE_COUNT);
 	}
 	
 	@Test
@@ -116,7 +122,7 @@ public class OrderControllerTest {
 	
 	private String constructReqParamPopExpExpForm(OrderExplorerForm expectedExplorerForm) {
 		final String ORDER_TYPE = "CFA";
-		final String MAKE = "APPLE";
+		final String MAKE = "ALL";
 		final String MODEL = "IPHONE";
 		final String DATE_TYPE = "CUSTOM";
 		final String FROM_DATE = "07/02/2013";
@@ -156,15 +162,15 @@ public class OrderControllerTest {
 		expectedOrderStatistics.setPieChartUrl(PIE_CHART_URL);
 		expectedOrderStatistics.setXyChartUrl(XY_CHART_URL);
 		
-		when(mockOrderService.getTotalOrderCount()).thenReturn(TOTAL_ORDER_COUNT);
+		when(mockOrderService.getTotalOrderCount(anyString(), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class))).thenReturn(TOTAL_ORDER_COUNT);
 		when(mockOrderService
-				.getRejectedOrderCountByType(anyString(),any(Date.class),any(Date.class)))
+				.getRejectedOrderCount(anyString(), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
 				.thenReturn(TOTAL_REJECTED_COUNT);
 		when(mockOrderService
-				.getSuccessfullyCompletedOrderCountByType(anyString(),any(Date.class),any(Date.class)))
+				.getSuccessfullyCompletedOrderCount(anyString(), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
 				.thenReturn(TOTAL_SUCCESS_COUNT);
 		when(mockOrderService
-				.getSuccessfullyRequestedOrderCountByType(anyString(),any(Date.class),any(Date.class)))
+				.getSuccessfullyRequestedOrderCount(anyString(), (String)isNull(), (String)isNull(), any(Date.class),any(Date.class)))
 				.thenReturn(TOTAL_FAILURE_COUNT);
 	}
 	

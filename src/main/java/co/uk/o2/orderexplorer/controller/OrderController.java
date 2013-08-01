@@ -49,9 +49,6 @@ import co.uk.o2.orderexplorer.utils.OrderType;
 @RequestMapping(value = "/order-explorer")
 public class OrderController {
 
-	public OrderController() {
-		System.out.println("Inside OrderController constructor");
-	}
 	@Autowired
 	@Qualifier(value="orderService")
 	private OrderService orderService;
@@ -73,20 +70,20 @@ public class OrderController {
 		
 		orderStatistics.setPieChartUrl("/order-explorer/pie-chart.jpeg");
 		orderStatistics.setXyChartUrl("/order-explorer/xy-chart.jpeg");
-		orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount());
-		orderStatistics.setTotalSuccessCount(orderService.getSuccessfullyCompletedOrderCount());
-		orderStatistics.setTotalRejectedCount(orderService.getRejectedOrderCount());
-		orderStatistics.setTotalFailureCount(orderService.getSuccessfullyRequestedOrderCount());
+		orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount(null,null,null,null,null));
+		orderStatistics.setTotalSuccessCount(orderService.getSuccessfullyCompletedOrderCount(null,null,null,null,null));
+		orderStatistics.setTotalRejectedCount(orderService.getRejectedOrderCount(null,null,null,null,null));
+		orderStatistics.setTotalFailureCount(orderService.getSuccessfullyRequestedOrderCount(null,null,null,null,null));
 		
 		
 		final String TODAY = DateType.TODAY.getType();
 		Date today = dateUtils.getFromDate(TODAY, dateUtils.currentTime());
 		Date now = dateUtils.now();
 		
-		orderStatistics.setCfaCount(orderService.getTotalOrderCountByType(OrderType.CFA.getName(), today, now));
-		orderStatistics.setCfuCount(orderService.getTotalOrderCountByType(OrderType.CFU.getName(), today, now));
-		orderStatistics.setAfaCount(orderService.getTotalOrderCountByType(OrderType.AFA.getName(), today, now));
-		orderStatistics.setAfuCount(orderService.getTotalOrderCountByType(OrderType.AFU.getName(), today, now));
+		orderStatistics.setCfaCount(orderService.getTotalOrderCount(OrderType.CFA.getName(), null, null, today, now));
+		orderStatistics.setCfuCount(orderService.getTotalOrderCount(OrderType.CFU.getName(), null, null, today, now));
+		orderStatistics.setAfaCount(orderService.getTotalOrderCount(OrderType.AFA.getName(), null, null, today, now));
+		orderStatistics.setAfuCount(orderService.getTotalOrderCount(OrderType.AFU.getName(), null, null, today, now));
 
 		//Add model objects
 		mv.addObject("orderStats", orderStatistics);
@@ -126,11 +123,11 @@ public class OrderController {
 			OrderStatistics orderStatistics = new OrderStatistics();
 
 			orderStatistics.setProduct(orderType);
-			orderStatistics.setTotalOrderCount(orderService.getTotalOrderCountByType(orderType, fromDate, toDate));
+			orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount(orderType, null, null, fromDate, toDate));
 
-			orderStatistics.getCustomCounts().put("OrdersRejected", orderService.getRejectedOrderCountByType(orderType, fromDate, toDate));
-			orderStatistics.getCustomCounts().put("OrdersAccepted", orderService.getSuccessfullyCompletedOrderCountByType(orderType, fromDate, toDate));
-			orderStatistics.getCustomCounts().put("OrdersSubmissionFailed", orderService.getSuccessfullyRequestedOrderCountByType(orderType, fromDate, toDate));
+			orderStatistics.getCustomCounts().put("OrdersRejected", orderService.getRejectedOrderCount(orderType, null, null, fromDate, toDate));
+			orderStatistics.getCustomCounts().put("OrdersAccepted", orderService.getSuccessfullyCompletedOrderCount(orderType, null, null, fromDate, toDate));
+			orderStatistics.getCustomCounts().put("OrdersSubmissionFailed", orderService.getSuccessfullyRequestedOrderCount(orderType, null, null, fromDate, toDate));
 
 			orderStatistics.setAllBrands(orderService.getAllBrands());
 			orderStatistics.setPieChartUrl("/order-explorer/pie-chart.jpeg?orderType=" + orderType + "&make=" + make + "&model=" + model 
@@ -163,13 +160,13 @@ public class OrderController {
 		
 		DefaultPieDataset dataSet = new DefaultPieDataset();
 		if ((orderType != null) && (!"ALL".equals(orderType))) {
-			ordersAccepted = orderService.getSuccessfullyCompletedOrderCountByType(orderType, fromDate, toDate);
-			ordersRejected = orderService.getRejectedOrderCountByType(orderType, fromDate, toDate);
-			ordersSubmissionFailed = orderService.getSuccessfullyRequestedOrderCountByType(orderType, fromDate, toDate);
+			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount(orderType, null, null, fromDate, toDate);
+			ordersRejected = orderService.getRejectedOrderCount(orderType, null, null, fromDate, toDate);
+			ordersSubmissionFailed = orderService.getSuccessfullyRequestedOrderCount(orderType, null, null, fromDate, toDate);
 		} else {
-			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount();
-			ordersRejected = orderService.getRejectedOrderCount();
-			ordersSubmissionFailed = orderService.getSuccessfullyRequestedOrderCount();
+			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount(null, null, null, null, null);
+			ordersRejected = orderService.getRejectedOrderCount(null, null, null, null, null);
+			ordersSubmissionFailed = orderService.getSuccessfullyRequestedOrderCount(null, null, null, null, null);
 		}
 		
 		dataSet.setValue("OrderAccepted", ordersAccepted);
