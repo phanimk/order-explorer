@@ -57,12 +57,17 @@
 							#end							
 						}; 
          	 			 
-         	 			$('#modelSelect').empty();
-         	 			$('#modelSelect').append('<option value="ALL">ALL</option>');
+         	 			$('#model').empty();
+         	 			$('#model').append('<option value="ALL">ALL</option>');
          	 			$.each( newBrandMap , function( key, value ) {
          	 				if(key == val){
          	 					$.each(value, function( intIndex, objValue ) {
-    								$('#modelSelect').append("<option >" + objValue + "</option>");
+         	 						if(objValue == '$models') {
+         	 							$('#model').append("<option selected>" + objValue + "</option>");
+         	 						} else {
+         	 							$('#model').append("<option >" + objValue + "</option>");
+         	 						}
+    								
 								});
          	 				}         	 				
 						});

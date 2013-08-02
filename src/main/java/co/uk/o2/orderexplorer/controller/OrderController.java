@@ -50,143 +50,188 @@ import co.uk.o2.orderexplorer.utils.OrderType;
 public class OrderController {
 
 	@Autowired
-	@Qualifier(value="orderService")
+	@Qualifier(value = "orderService")
 	private OrderService orderService;
 
 	@Autowired
 	private DateUtils dateUtils;
-	
+
 	private DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 	private final String ALL = "ALL";
 
 	@RequestMapping(value = "/allproducts", method = RequestMethod.GET)
-	public ModelAndView getBasicView(@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm) {
-		//Set View
+	public ModelAndView getBasicView(
+			@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm) {
+		// Set View
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("main");
 
-		//Prepare Model Objects
+		// Prepare Model Objects
 		OrderStatistics orderStatistics = new OrderStatistics();
-		
+
 		orderStatistics.setPieChartUrl("/order-explorer/pie-chart.jpeg");
 		orderStatistics.setXyChartUrl("/order-explorer/xy-chart.jpeg");
-		orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount(null,null,null,null,null));
-		orderStatistics.setTotalSuccessCount(orderService.getSuccessfullyCompletedOrderCount(null,null,null,null,null));
-		orderStatistics.setTotalRejectedCount(orderService.getRejectedOrderCount(null,null,null,null,null));
-		orderStatistics.setTotalFailureCount(orderService.getSuccessfullyRequestedOrderCount(null,null,null,null,null));
-		
-		
+		orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount(
+				null, null, null, null, null));
+		orderStatistics.setTotalSuccessCount(orderService
+				.getSuccessfullyCompletedOrderCount(null, null, null, null,
+						null));
+		orderStatistics.setTotalRejectedCount(orderService
+				.getRejectedOrderCount(null, null, null, null, null));
+		orderStatistics.setTotalFailureCount(orderService
+				.getSuccessfullyRequestedOrderCount(null, null, null, null,
+						null));
+
 		final String TODAY = DateType.TODAY.getType();
 		Date today = dateUtils.getFromDate(TODAY, dateUtils.currentTime());
 		Date now = dateUtils.now();
-		
-		orderStatistics.setCfaCount(orderService.getTotalOrderCount(OrderType.CFA.getName(), null, null, today, now));
-		orderStatistics.setCfuCount(orderService.getTotalOrderCount(OrderType.CFU.getName(), null, null, today, now));
-		orderStatistics.setAfaCount(orderService.getTotalOrderCount(OrderType.AFA.getName(), null, null, today, now));
-		orderStatistics.setAfuCount(orderService.getTotalOrderCount(OrderType.AFU.getName(), null, null, today, now));
 
-		//Add model objects
+		orderStatistics.setCfaCount(orderService.getTotalOrderCount(
+				OrderType.CFA.getName(), null, null, today, now));
+		orderStatistics.setCfuCount(orderService.getTotalOrderCount(
+				OrderType.CFU.getName(), null, null, today, now));
+		orderStatistics.setAfaCount(orderService.getTotalOrderCount(
+				OrderType.AFA.getName(), null, null, today, now));
+		orderStatistics.setAfuCount(orderService.getTotalOrderCount(
+				OrderType.AFU.getName(), null, null, today, now));
+
+		// Add model objects
 		mv.addObject("orderStats", orderStatistics);
-		addModelAttributes(mv.getModel());
-		
+		orderStatistics.setAllBrands(orderService.getAllBrands());
+		addModelAttributes(mv.getModel(), orderExplorerForm.getModel());
+
 		return mv;
 	}
 
 	@RequestMapping(value = "/product", method = RequestMethod.GET)
-	public ModelAndView getProductView(@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm) {
+	public ModelAndView getProductView(
+			@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm) {
 
 		String orderType = orderExplorerForm.getOrderType();
 		String make = orderExplorerForm.getMake();
-		
+
 		boolean bBasicView = false;
 		if (!ALL.equals(orderType)) {
 			if (!ALL.equals(make)) {
 				bBasicView = true;
-			} 
+			}
 		} else {
 			bBasicView = true;
 		}
-		
-		if(bBasicView) {
+
+		if (bBasicView) {
 			return getBasicView(orderExplorerForm);
 		} else {
 			String model = orderExplorerForm.getModel();
-			
+
 			String fromDateStr = orderExplorerForm.getFromDate();
 			String toDateStr = orderExplorerForm.getToDate();
 			String date = orderExplorerForm.getDate();
-			
+
 			Date fromDate = getDate(fromDateStr, date, true);
 			Date toDate = getDate(toDateStr, date, false);
-			
-			
+
 			OrderStatistics orderStatistics = new OrderStatistics();
 
 			orderStatistics.setProduct(orderType);
-			orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount(orderType, null, null, fromDate, toDate));
+			orderStatistics.setTotalOrderCount(orderService.getTotalOrderCount(
+					orderType, null, null, fromDate, toDate));
 
-			orderStatistics.getCustomCounts().put("OrdersRejected", orderService.getRejectedOrderCount(orderType, null, null, fromDate, toDate));
-			orderStatistics.getCustomCounts().put("OrdersAccepted", orderService.getSuccessfullyCompletedOrderCount(orderType, null, null, fromDate, toDate));
-			orderStatistics.getCustomCounts().put("OrdersSubmissionFailed", orderService.getSuccessfullyRequestedOrderCount(orderType, null, null, fromDate, toDate));
+			orderStatistics.getCustomCounts().put(
+					"OrdersRejected",
+					orderService.getRejectedOrderCount(orderType, null, null,
+							fromDate, toDate));
+			orderStatistics.getCustomCounts().put(
+					"OrdersAccepted",
+					orderService.getSuccessfullyCompletedOrderCount(orderType,
+							null, null, fromDate, toDate));
+			orderStatistics.getCustomCounts().put(
+					"OrdersSubmissionFailed",
+					orderService.getSuccessfullyRequestedOrderCount(orderType,
+							null, null, fromDate, toDate));
 
 			orderStatistics.setAllBrands(orderService.getAllBrands());
-			orderStatistics.setPieChartUrl("/order-explorer/pie-chart.jpeg?orderType=" + orderType + "&make=" + make + "&model=" + model 
-					+ "&date=" + date + "&fromDate=" + fromDateStr + "&toDate=" + toDateStr);
-			orderStatistics.setXyChartUrl("/order-explorer/xy-chart.jpeg?orderType=" + orderType + "&make=" + make + "&model=" + model 
-					+ "&date=" + date + "&fromDate=" + fromDateStr + "&toDate=" + toDateStr);
-			
+			orderStatistics
+					.setPieChartUrl("/order-explorer/pie-chart.jpeg?orderType="
+							+ orderType + "&make=" + make + "&model=" + model
+							+ "&date=" + date + "&fromDate=" + fromDateStr
+							+ "&toDate=" + toDateStr);
+			orderStatistics
+					.setXyChartUrl("/order-explorer/xy-chart.jpeg?orderType="
+							+ orderType + "&make=" + make + "&model=" + model
+							+ "&date=" + date + "&fromDate=" + fromDateStr
+							+ "&toDate=" + toDateStr);
+
 			ModelAndView mv = new ModelAndView();
 			mv.setViewName("product");
-			
+
 			mv.addObject("orderStats", orderStatistics);
-			addModelAttributes(mv.getModel());
-			
+			addModelAttributes(mv.getModel(), model);
+
 			return mv;
 		}
 	}
-	
+
 	@RequestMapping(value = "/pie-chart.jpeg", method = RequestMethod.GET)
-	public void getPieChart(HttpServletRequest req, HttpServletResponse response, 
-			@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm) throws IOException {
+	public void getPieChart(
+			HttpServletRequest req,
+			HttpServletResponse response,
+			@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm)
+			throws IOException {
 		response.setContentType("image/png");
 
 		String orderType = orderExplorerForm.getOrderType();
-		Date fromDate = getDate(orderExplorerForm.getFromDate(), orderExplorerForm.getDate(), true);
-		Date toDate = getDate(orderExplorerForm.getToDate(), orderExplorerForm.getToDate(), false);
+		Date fromDate = getDate(orderExplorerForm.getFromDate(),
+				orderExplorerForm.getDate(), true);
+		Date toDate = getDate(orderExplorerForm.getToDate(),
+				orderExplorerForm.getToDate(), false);
 
 		long ordersAccepted = 0;
 		long ordersRejected = 0;
 		long ordersSubmissionFailed = 0;
-		
+
 		DefaultPieDataset dataSet = new DefaultPieDataset();
 		if ((orderType != null) && (!"ALL".equals(orderType))) {
-			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount(orderType, null, null, fromDate, toDate);
-			ordersRejected = orderService.getRejectedOrderCount(orderType, null, null, fromDate, toDate);
-			ordersSubmissionFailed = orderService.getSuccessfullyRequestedOrderCount(orderType, null, null, fromDate, toDate);
+			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount(
+					orderType, null, null, fromDate, toDate);
+			ordersRejected = orderService.getRejectedOrderCount(orderType,
+					null, null, fromDate, toDate);
+			ordersSubmissionFailed = orderService
+					.getSuccessfullyRequestedOrderCount(orderType, null, null,
+							fromDate, toDate);
 		} else {
-			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount(null, null, null, null, null);
-			ordersRejected = orderService.getRejectedOrderCount(null, null, null, null, null);
-			ordersSubmissionFailed = orderService.getSuccessfullyRequestedOrderCount(null, null, null, null, null);
+			ordersAccepted = orderService.getSuccessfullyCompletedOrderCount(
+					null, null, null, null, null);
+			ordersRejected = orderService.getRejectedOrderCount(null, null,
+					null, null, null);
+			ordersSubmissionFailed = orderService
+					.getSuccessfullyRequestedOrderCount(null, null, null, null,
+							null);
 		}
-		
+
 		dataSet.setValue("OrderAccepted", ordersAccepted);
 		dataSet.setValue("OrderRejected", ordersRejected);
 		dataSet.setValue("SubmissionFailed", ordersSubmissionFailed);
-		
-		JFreeChart chart = ChartFactory.createPieChart("", dataSet, true, true, true);
+
+		JFreeChart chart = ChartFactory.createPieChart("", dataSet, true, true,
+				true);
 
 		PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setSectionPaint("OrderAccepted", Color.GREEN);
 		plot.setSectionPaint("OrderRejected", Color.RED);
 		plot.setSectionPaint("SubmissionFailed", Color.YELLOW);
 		plot.setBackgroundPaint(Color.WHITE);
-		ChartUtilities.writeChartAsJPEG(response.getOutputStream(), chart, 500, 400);
+		ChartUtilities.writeChartAsJPEG(response.getOutputStream(), chart, 500,
+				400);
 		response.getOutputStream().close();
 	}
 
 	@RequestMapping(value = "/xy-chart.jpeg", method = RequestMethod.GET)
-	public void getLineGraph(HttpServletRequest req, HttpServletResponse response, 
-			@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm) throws IOException {
+	public void getLineGraph(
+			HttpServletRequest req,
+			HttpServletResponse response,
+			@ModelAttribute("orderExplorerForm") OrderExplorerForm orderExplorerForm)
+			throws IOException {
 		response.setContentType("image/png");
 		XYSeries series1 = new XYSeries("Time in Hrs");
 		series1.add(1.0, 1.0);
@@ -212,27 +257,29 @@ public class OrderController {
 		chart.getPlot().setBackgroundPaint(Color.WHITE);
 		chart.getPlot().setOutlineVisible(false);
 
-		ChartUtilities.writeChartAsJPEG(response.getOutputStream(), chart, 500, 400);
+		ChartUtilities.writeChartAsJPEG(response.getOutputStream(), chart, 500,
+				400);
 		response.getOutputStream().close();
 	}
-	
+
 	/*
 	 * Common Model attributes
 	 */
-	private void addModelAttributes(Map<String, Object> modelMap) {
+	private void addModelAttributes(Map<String, Object> modelMap, String model) {
 		Map<String, List<String>> allBrandsMap = orderService.getAllBrands();
-		
+
 		modelMap.put("brands", getBrands(allBrandsMap));
-		modelMap.put("models", getModels(allBrandsMap));
+		modelMap.put("models", model);
 		modelMap.put("orderTypes", getOrderTypes());
 		modelMap.put("dateTypes", getDateTypes());
 	}
-	
+
 	private Date getDate(String dateStr, String dateType, boolean bFromDate) {
 		Date retDate = null;
-		if(StringUtils.isEmpty(dateStr)) {
+		if (StringUtils.isEmpty(dateStr)) {
 			long currentTime = dateUtils.currentTime();
-			retDate = bFromDate?dateUtils.getFromDate(dateType, currentTime):new Date(currentTime);
+			retDate = bFromDate ? dateUtils.getFromDate(dateType, currentTime)
+					: new Date(currentTime);
 		} else {
 			try {
 				retDate = df.parse(dateStr);
@@ -241,48 +288,48 @@ public class OrderController {
 				e.printStackTrace();
 			}
 		}
-		
+
 		return retDate;
 	}
-	
+
 	private Map<String, String> getModels(Map<String, List<String>> allBrandsMap) {
 		Map<String, String> modelsMap = new LinkedHashMap<String, String>();
-		
+
 		modelsMap.put("ALL", "ALL");
-		for(String brand : allBrandsMap.keySet()) {
-			for(String model : allBrandsMap.get(brand)) {
+		for (String brand : allBrandsMap.keySet()) {
+			for (String model : allBrandsMap.get(brand)) {
 				modelsMap.put(model, model);
 			}
 		}
 
 		return modelsMap;
 	}
-	
+
 	private Map<String, String> getBrands(Map<String, List<String>> allBrandsMap) {
 		Map<String, String> brandsMap = new LinkedHashMap<String, String>();
-		
+
 		brandsMap.put("ALL", "ALL");
-		for(String brand : allBrandsMap.keySet()) {
+		for (String brand : allBrandsMap.keySet()) {
 			brandsMap.put(brand, brand);
 		}
 
 		return brandsMap;
 	}
-	
+
 	private Map<String, String> getOrderTypes() {
 		Map<String, String> ordreTypesMap = new LinkedHashMap<String, String>();
-		
-		for(OrderType type : OrderType.values()) {
+
+		for (OrderType type : OrderType.values()) {
 			ordreTypesMap.put(type.getName(), type.getName());
 		}
 
 		return ordreTypesMap;
 	}
-	
+
 	private Map<String, String> getDateTypes() {
 		Map<String, String> dateTypesMap = new LinkedHashMap<String, String>();
-		
-		for(DateType type : DateType.values()) {
+
+		for (DateType type : DateType.values()) {
 			dateTypesMap.put(type.getType(), type.getType());
 		}
 
