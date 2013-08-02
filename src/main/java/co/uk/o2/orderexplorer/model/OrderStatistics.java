@@ -218,4 +218,28 @@ public class OrderStatistics {
 		this.afaCount = afaCount;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		boolean retVal = false;
+		if(obj != null && obj instanceof OrderStatistics) {
+			retVal = this.toString().equals(((OrderStatistics)obj).toString());
+		}
+		
+		return retVal;
+	}
+	
+	@Override
+	public String toString() {
+		return 
+		"[totalOrderCount="+totalOrderCount+
+		",totalSuccessCount="+totalSuccessCount+
+		",totalFailureCount="+totalFailureCount+
+		",totalRejectedCount="+totalRejectedCount+
+		",cfuCount="+cfuCount+
+		",cfaCount="+cfaCount+
+		",afuCount="+afuCount+
+		",afaCount="+afaCount+
+		",pieChartUrl="+pieChartUrl+
+		",xyChartUrl="+xyChartUrl+"]";
+	}
 }

@@ -3,13 +3,22 @@
     apply plugin: 'eclipse'
 	apply plugin: 'jetty'
 	
+	sourceSets{
+		intTest {
+			compileClasspath += sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+		}
+	}
+	
     repositories {
        mavenCentral()
     }
     
     dependencies {
         testCompile 'junit:junit:4.8.2'
+		testCompile 'org.springframework:spring-test:3.2.3.RELEASE'
         testCompile 'org.mockito:mockito-all:1.8.4'
+		testCompile 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:1.34'
+		testCompile 'org.spockframework:spock-spring:0.7-groovy-2.0'
         compile 'org.springframework:spring-web:3.2.2.RELEASE'
        	compile 'org.springframework:spring-webmvc:3.2.2.RELEASE'
    		compile 'org.springframework.data:spring-data-mongodb:1.2.0.RELEASE'
@@ -18,9 +27,15 @@
    		compile 'javax.servlet:servlet-api:2.5'
    		compile 'org.apache.velocity:velocity:1.7'
    		compile 'org.apache.velocity:velocity-tools:2.0'
+		compile 'org.apache.commons:commons-lang3:3.1'
    		runtime 'javax.servlet:jstl:1.1.2'
     }
     
+	task intTest(type: Test) {
+		testClassesDir = sourceSets.intTest.output.classesDir
+		classpath += sourceSets.intTest.runtimeClasspath
+	}
+	
     war{    	
     	version '0.1'    	
     	baseName 'order-explorer'    	

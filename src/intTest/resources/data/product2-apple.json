@@ -1,0 +1,235 @@
+{
+	"type" : "device",
+	"skuOrPid" : "1SAN3GWN",
+	"product" : {
+		"id" : "AppleMobile2",
+		"subType" : "Mobile",
+		"brand" : "Apple",
+		"model" : "iPhone 4",
+		"sku" : {
+			"code" : "1SAN3GWN"
+		},
+		"sortOrdinal" : 940,
+		"keyFeatures" : [
+			{
+				"title" : "<a name=\"data_offer\"></a>Let us treat you",
+				"text" : "Take home the Samsung Galaxy Note 10.1 and we’ll give you a voucher for towards 5 EA Games. Choose from a wide range that includes Monopoly, FIFA 12 and Worms. We’ll also give you 1GB of data for free too.*",
+				"image" : {
+					"filename" : "key-feature-creator.jpg",
+					"checksum" : "2dcf9dd98955a43ce116118829f9342f"
+				}
+			},
+			{
+				"title" : "Get more done with Multiscreen",
+				"text" : "The Samsung Galaxy Note 10.1 allows you to do two things at once, making multitasking seamless.  Makes notes while browsing a website. Check your email or send a text while watching a film - wthout having to pause the video.",
+				"image" : {
+					"filename" : "key-feature-creator.jpg",
+					"checksum" : "2dcf9dd98955a43ce116118829f9342f"
+				}
+			},
+			{
+				"title" : "Write, draw and sketch with S Pen",
+				"text" : "The S pen offers such a realistic experience it’ll make your Note 10.1 feel like a notepad. Incredibly precise and pressure sensitive, the S Pen allows you to be as creative as you want when you’re on the move.",
+				"image" : {
+					"filename" : "key-feature-creator.jpg",
+					"checksum" : "2dcf9dd98955a43ce116118829f9342f"
+				}
+			},
+			{
+				"title" : "Share seamlessly",
+				"text" : "Use AllShare Play to connect to other devices and experience videos, pictures and even listen to music together. And with AllShare Cast you can put what’s on your Note to a TV monitor so you can control presentations form your tablet or use it as controller to play games.",
+				"image" : {
+					"filename" : "key-feature-creator.jpg",
+					"checksum" : "2dcf9dd98955a43ce116118829f9342f"
+				}
+			}
+		],
+		"techSpec" : [
+			{
+				"title" : "Overall Specification",
+				"data" : [
+					{
+						"key" : "Operating System",
+						"value" : "Android 4.1"
+					},
+					{
+						"key" : "Processor",
+						"value" : "1.4GHz quad core"
+					},
+					{
+						"key" : "Dimensions (mm)",
+						"value" : "257.8 x 175.3 x 8.9"
+					},
+					{
+						"key" : "Weight (g)",
+						"value" : "583"
+					},
+					{
+						"key" : "Screen size",
+						"value" : "Up to 10.1\""
+					},
+					{
+						"key" : "Internal memory (up to)",
+						"value" : "Up to 16GB"
+					},
+					{
+						"key" : "External memory card type",
+						"value" : "microSD"
+					}
+				]
+			},
+			{
+				"title" : "Entertainment",
+				"data" : [
+					{
+						"key" : "Rear Camera",
+						"value" : "5 megapixels"
+					},
+					{
+						"key" : "Front Camera",
+						"value" : "1.9 megapixels"
+					},
+					{
+						"key" : "Video",
+						"value" : "Yes"
+					},
+					{
+						"key" : "3G/4G version",
+						"value" : "3G"
+					},
+					{
+						"key" : "Standby time 4G",
+						"value" : "Up to 2280 hours"
+					}
+				]
+			},
+			{
+				"title" : "Connectivity",
+				"data" : [
+					{
+						"key" : "Connectors",
+						"value" : "3.5mm audio jack"
+					},
+					{
+						"key" : "Bluetooth",
+						"value" : "Yes"
+					},
+					{
+						"key" : "SAR rating",
+						"value" : "0.025"
+					}
+				]
+			}
+		],
+		"images" : {
+			"list" : {
+				"filename" : "samsung_galaxy_tab_10-1_list.png",
+				"checksum" : "520edbfed82cd2a0330c2c3f7127e162"
+			},
+			"details" : {
+				"filename" : "samsung_galaxy_tab_10-1_detail.png",
+				"checksum" : "33c551d498847be9dc42e45f70341f95"
+			},
+			"basket" : {
+				"filename" : "samsung_galaxy_tab_10-1_basket.png",
+				"checksum" : "4b5b252517fbcb193d24207c44c1dcf6"
+			},
+			"back" : {
+				"filename" : "samsung_galaxy_tab_10-1_back.png",
+				"checksum" : "381d8d08987d3c5a7d757dc4cce4398c"
+			},
+			"side" : {
+				"filename" : "samsung_galaxy_tab_10-1_side.png",
+				"checksum" : "2fdfa97838c7fb500c198de071ea7e4e"
+			}
+		},
+		"replacementCost" : "479.99",
+		"simType" : "Micro",
+		"sellingPoints" : [
+			"<a href=\"#data_offer\">Get 1GB data and EA games for free*</a>",
+			"Draw, write and play with more detail using the 10.1 inch screen",
+			"Multi-task with ease using Multi screen",
+			"Take notes, draw and publish digitally with ease using the S-Pen feature",
+			"Watch videos and text at the same time with Pop up Play",
+			"Eco rating: 3.9/5"
+		],
+		"fulfillmentData" : {
+			"productType" : "HAN",
+			"productName" : "HAN SAM Galaxy Tab 10.1 SKU",
+			"risk" : "2",
+			"otherProducts" : [
+				{
+					"productType" : "POS",
+					"productId" : "23GMBASN",
+					"productName" : "Sim P&G 3G Tablet Micro SIM"
+				},
+				{
+					"productType" : "LIT",
+					"productId" : "O2CN1252N",
+					"productName" : "LIT O2 Recycle Leaflet O2CN1252N"
+				},
+				{
+					"productType" : "LIT",
+					"productId" : "O2PPTABN",
+					"productName" : "PROMO - EA 5 FREE GAMES"
+				},
+				{
+					"productType" : "LIT",
+					"productId" : "O2PP1GBN",
+					"productName" : "PROMO - FREE 1GB TABLET DATA BUNDLE"
+				}
+			],
+			"productId" : "1SAN3GWN",
+			"replacementCost" : 47999,
+			"handsetMake" : "Samsung",
+			"handsetModel" : "Galaxy Note 10.1 White"
+		},
+		"stockInfo" : {
+			"stock" : "InStock"
+		},
+		"stockLimited" : false,
+		"longDescription" : "The Galaxy Note 10.1 is a new device that offers enhanced productivity, creativity and learning capability. Multitasking is made easy with the split screen functionality, and the easy to use S-Pen is pressure sensitive and extremely accurate.",
+		"costToO2" : "479.99",
+		"rrp" : "479.99",
+		"attachments" : [
+			{
+				"urn" : "urn:deviceDetailMerchandisingDesktop",
+				"contentType" : "text/html"
+			},
+			{
+				"urn" : "urn:deviceDetailMerchandisingMobile",
+				"contentType" : "text/html"
+			},
+			{
+				"urn" : "urn:deviceDetailFooterDesktop",
+				"contentType" : "text/html"
+			},
+			{
+				"urn" : "urn:deviceDetailFooterMobile",
+				"contentType" : "text/html"
+			}
+		],
+		"relationships" : [
+			{
+				"type" : "plan",
+				"id" : "1b836ed5-e0f2-4187-a26b-54841565bac3",
+				"prices" : [
+					{
+						"oneOff" : "479.99"
+					}
+				]
+			}
+		],
+		"channelPermissions" : {
+			"ConsumerNew" : "Buyable",
+			"ConsumerUpgrade" : "Buyable",
+			"VoiceNew" : "Buyable",
+			"VoiceUpgrade" : "Buyable"
+		},
+		"includeSimInUpgradeOrder" : true,
+		"categories" : [
+			"mbb",
+			"tablet"
+		]
+	}
+}

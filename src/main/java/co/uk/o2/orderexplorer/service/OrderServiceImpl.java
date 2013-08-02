@@ -17,6 +17,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import co.uk.o2.orderexplorer.utils.OrderType;
+
 import com.mongodb.DBObject;
 
 /**
@@ -26,12 +28,6 @@ import com.mongodb.DBObject;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
-	private static final String CFU = "CFU";
-	private static final String AFU = "AFU";
-	private static final String CFA = "CFA";
-	private static final String AFA = "AFA";
-
 	private String collectionName = "orders";
 
 	DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -51,191 +47,40 @@ public class OrderServiceImpl implements OrderService {
 		super();
 	}
 
+	public OrderServiceImpl(MongoTemplate mongoTemplate) {
+		this.mongoTemplate = mongoTemplate;
+	}
+
 	public OrderServiceImpl(MongoTemplate mongoTemplate, String collectionName) {
 		this.mongoTemplate = mongoTemplate;
 		this.collectionName = collectionName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#getTotalOrderCount()
-	 */
 	@Override
-	public long getTotalOrderCount() {
-		return mongoTemplate.getCollection(collectionName).count();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#
-	 * getSuccessfullyRequestedOrderCount()
-	 */
-	@Override
-	public long getSuccessfullyRequestedOrderCount() {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("submissionState").is(
-				"SubmissionFailed"));
-		return mongoTemplate.count(query, collectionName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#
-	 * getSuccessfullyCompletedOrderCount()
-	 */
-	@Override
-	public long getSuccessfullyCompletedOrderCount() {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("submissionState").is("OrderAccepted"));
-		return mongoTemplate.count(query, collectionName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#getRejectedOrderCount()
-	 */
-	@Override
-	public long getRejectedOrderCount() {
-		Query query = new Query();
-		query.addCriteria(Criteria.where("submissionState").is("OrderRejected"));
-		return mongoTemplate.count(query, collectionName);
-	}
-
-	private long getOrdersCountByType(String type, String action) {
-		Query query = new Query();
-		if (action == null) {
-			if (CFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-1"));
-			} else if (AFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-2"));
-			} else if (CFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-3"));
-			} else if (AFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-4"));
-			}
-		} else {
-			if (CFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-1")
-						.and("submissionState").is(action));
-			} else if (AFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-2")
-						.and("submissionState").is(action));
-			} else if (CFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-3")
-						.and("submissionState").is(action));
-			} else if (AFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-4")
-						.and("submissionState").is(action));
-			} else {
-				query.addCriteria(Criteria.where("submissionState").is(action));
-			}
-		}
-		return mongoTemplate.count(query, collectionName);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * co.uk.o2.orderexplorer.service.OrdersService#getTotalOrderCountBytype()
-	 */
-	@Override
-	public long getTotalOrderCountByType(String type, Date fromDate, Date toDate) {
-		return getOrdersCount(type, null, null, fromDate, toDate, null);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#
-	 * getSuccessfullyRequestedOrderCountBytype()
-	 */
-	@Override
-	public long getSuccessfullyRequestedOrderCountByType(String type,
+	public long getTotalOrderCount(String type, String brand, String model,
 			Date fromDate, Date toDate) {
-		return getOrdersCount(type, null, null, fromDate, toDate,
+		return getOrdersCount(type, brand, model, fromDate, toDate, null);
+	}
+
+	@Override
+	public long getSuccessfullyRequestedOrderCount(String type, String brand,
+			String model, Date fromDate, Date toDate) {
+		return getOrdersCount(type, brand, model, fromDate, toDate,
 				"SubmissionFailed");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#
-	 * getSuccessfullyCompletedOrderCountBytype()
-	 */
 	@Override
-	public long getSuccessfullyCompletedOrderCountByType(String type,
-			Date fromDate, Date toDate) {
-		return getOrdersCount(type, null, null, fromDate, toDate,
+	public long getSuccessfullyCompletedOrderCount(String type, String brand,
+			String model, Date fromDate, Date toDate) {
+		return getOrdersCount(type, brand, model, fromDate, toDate,
 				"OrderAccepted");
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * co.uk.o2.orderexplorer.service.OrdersService#getRejectedOrderCountBytype
-	 * ()
-	 */
 	@Override
-	public long getRejectedOrderCountByType(String type, Date fromDate,
-			Date toDate) {
-		return getOrdersCount(type, null, null, fromDate, toDate,
+	public long getRejectedOrderCount(String type, String brand, String model,
+			Date fromDate, Date toDate) {
+		return getOrdersCount(type, brand, model, fromDate, toDate,
 				"OrderRejected");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * co.uk.o2.orderexplorer.service.OrdersService#getTotalOrderCountByMake()
-	 */
-	@Override
-	public long getTotalOrderCountByMake(String make) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#
-	 * getSuccessfullyRequestedOrderCountByMake()
-	 */
-	@Override
-	public long getSuccessfullyRequestedOrderCountByMake(String make) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see co.uk.o2.orderexplorer.service.OrdersService#
-	 * getSuccessfullyCompletedOrderCountByMake()
-	 */
-	@Override
-	public long getSuccessfullyCompletedOrderCountByMake(String make) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * co.uk.o2.orderexplorer.service.OrdersService#getRejectedOrderCountByMake
-	 * (java.lang.String)
-	 */
-	@Override
-	public long getRejectedOrderCountByMake(String make) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -271,84 +116,67 @@ public class OrderServiceImpl implements OrderService {
 
 	private long getOrdersCount(String type, String brand, String model,
 			Date fromDate, Date toDate, String action) {
-		String productId = null;
-		Query productQuery = new Query();
-		if (brand != null) {
-			if (model != null) {
-				productQuery.addCriteria(Criteria.where("brand").is(brand)
-						.and("model").is(model));
-				productId = mongoTemplate.findOne(productQuery, String.class);
-			}
-		}
+		// String productId = null;
+		// Query productQuery = new Query();
+		// if (brand != null) {
+		// if (model != null) {
+		// productQuery.addCriteria(Criteria.where("brand").is(brand)
+		// .and("model").is(model));
+		// productId = mongoTemplate.findOne(productQuery, String.class);
+		// }
+		// }
 
 		Query query = new Query();
 
-		if (productId != null) {
-			query.addCriteria(Criteria.where(
-					"lineItems.fulfillmentData.productId").is(productId));
+		// if (productId != null) {
+		// query.addCriteria(Criteria.where(
+		// "lineItems.fulfillmentData.productId").is(productId));
+		// }
+
+		if (type != null) {
+			String orderNumRegEx = getOrderNumberRegEx(type);
+			if (orderNumRegEx != null) {
+				query.addCriteria(Criteria.where("orderNumber").regex(
+						orderNumRegEx));
+			}
 		}
 
-		if (action == null) {
-			if (CFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-1"));
-			} else if (AFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-2"));
-			} else if (CFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-3"));
-			} else if (AFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-4"));
-			}
-		} else {
-			if (CFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-1")
-						.and("submissionState").is(action));
-			} else if (AFU.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-2")
-						.and("submissionState").is(action));
-			} else if (CFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-3")
-						.and("submissionState").is(action));
-			} else if (AFA.equals(type)) {
-				query.addCriteria(Criteria.where("orderNumber").regex("^ms-4")
-						.and("submissionState").is(action));
+		if (action != null) {
+			query.addCriteria(Criteria.where("submissionState").is(action));
+		}
+
+		Criteria createdTimeCriteria = null;
+		if (fromDate != null) {
+			createdTimeCriteria = Criteria.where("createdTime").gt(
+					df.format(fromDate));
+		}
+
+		if (toDate != null) {
+			if (createdTimeCriteria != null) {
+				query.addCriteria(createdTimeCriteria.lt(df.format(toDate)));
 			} else {
-				query.addCriteria(Criteria.where("submissionState").is(action));
+				query.addCriteria(Criteria.where("createdTime").lt(
+						df.format(toDate)));
 			}
 		}
-		// query.addCriteria(Criteria.where("submittedTime")
-		// .gt(fromDate)).lt(toDate)));
 
-		query.addCriteria(Criteria.where("submittedTime")
-				.gt(df.format(fromDate)).lt(df.format(toDate)));
-
+		System.out.println("Query: " + query);
 		return mongoTemplate.count(query, collectionName);
 	}
 
-	@Override
-	public long getTotalOrderCount(String type, String brand, String model,
-			Date fromDate, Date toDate) {
-		return getOrdersCount(type, brand, model, fromDate, toDate, null);
-	}
+	private String getOrderNumberRegEx(String type) {
+		String retStr = null;
+		if (OrderType.CFU.getName().equals(type)) {
+			retStr = "^ms-1";
+		} else if (OrderType.AFU.getName().equals(type)) {
+			retStr = "^ms-2";
+		} else if (OrderType.CFA.getName().equals(type)) {
+			retStr = "^ms-3";
+		} else if (OrderType.AFA.getName().equals(type)) {
+			retStr = "^ms-4";
+		}
 
-	@Override
-	public long getSuccessfullyRequestedOrderCount(String type, String brand,
-			String model, Date fromDate, Date toDate) {
-		return getOrdersCount(type, brand, model, fromDate, toDate,
-				"SubmissionFailed");
-	}
-
-	@Override
-	public long getSuccessfullyCompletedOrderCount(String type, String brand,
-			String model, Date fromDate, Date toDate) {
-		return getOrdersCount(type, brand, model, fromDate, toDate,
-				"OrderAccepted");
-	}
-
-	@Override
-	public long getRejectedOrderCount(String type, String brand, String model,
-			Date fromDate, Date toDate) {
-		return getOrdersCount(type, brand, model, fromDate, toDate,
-				"OrderRejected");
+		return retStr;
 	}
 
 	@Override
